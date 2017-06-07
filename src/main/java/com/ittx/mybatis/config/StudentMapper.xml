@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ittx.mybatis.demo1.dao.StudentDao">
+
+	<resultMap type="com.ittx.mybatis.demo1.model.StudentBean"
+		id="studentMap">
+		<id property="id" column="sid" javaType="java.lang.Integer" />
+		<result property="name" column="student_name" javaType="java.lang.String" />
+	</resultMap>
+
+	<resultMap type="com.ittx.mybatis.demo1.model.StudentBean"
+		id="studentAndCourses">
+		<id property="id" column="sid" javaType="java.lang.Integer" />
+		<result property="name" column="student_name" javaType="java.lang.String" />
+		<collection property="courses" column="sid"
+			select="findCoursesByStudent"></collection>
+	</resultMap>
+	
+	<select id="findStuById" resultMap="studentMap">
+		select * from t_student where sid = #{id}
+	</select>
+
+	<select id="findStuAndCou" resultMap="studentAndCourses">
+		select * from t_student where sid = #{id}
+	</select>
+	
+	<select id="findCoursesByStudent" resultMap="com.ittx.mybatis.demo1.dao.CoursesDao.coursesMap">
+		select * from t_courses where cid in (select fk_cou_id from t_stu_cou where
+		fk_stu_id = #{id})
+	</select>
+
+</mapper>
