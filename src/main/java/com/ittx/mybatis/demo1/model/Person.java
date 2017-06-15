@@ -6,7 +6,6 @@ import java.util.List;
  * 客户实体
  */
 public class Person {
-
 	private String id;
 	private String name;
 	private String address;

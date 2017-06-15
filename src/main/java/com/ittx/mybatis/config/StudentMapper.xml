@@ -15,18 +15,17 @@
 		<collection property="courses" column="sid"
 			select="findCoursesByStudent"></collection>
 	</resultMap>
-	
-	<select id="findStuById" resultMap="studentMap">
-		select * from t_student where sid = #{id}
-	</select>
 
-	<select id="findStuAndCou" resultMap="studentAndCourses">
-		select * from t_student where sid = #{id}
-	</select>
-	
 	<select id="findCoursesByStudent" resultMap="com.ittx.mybatis.demo1.dao.CoursesDao.coursesMap">
 		select * from t_courses where cid in (select fk_cou_id from t_stu_cou where
 		fk_stu_id = #{id})
 	</select>
-
+	<!--resultMap="studentMap" 只根据学生id找学生不关联学生选修的课程  -->
+	<select id="findStuById" resultMap="studentMap">
+		select * from t_student where sid = #{id}
+	</select>
+	<!--resultMap="studentAndCourses" 只根据学生id找学生同时关联查询学生选修的课程  -->
+	<select id="findStuAndCou" resultMap="studentAndCourses">
+		select * from t_student where sid = #{id}
+	</select>
 </mapper>

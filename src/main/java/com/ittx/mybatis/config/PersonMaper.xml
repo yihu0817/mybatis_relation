@@ -5,6 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- namespace 必须写成dao的包名+类名 -->
 <mapper namespace="com.ittx.mybatis.demo1.dao.OrderDao">
 
+	<resultMap type="com.ittx.mybatis.demo1.model.Person" id="personBaseBean">
+		<id column="personId" property="id"/>
+		<result column="personName" property="name"/>
+		<result column="personAddress" property="address"/>
+		<result column="personTel" property="tel"/>
+	</resultMap>
+
 	<resultMap type="com.ittx.mybatis.demo1.model.Person" id="personBean">
 		<id column="personId" property="id"/>
 		<result column="personName" property="name"/>
@@ -13,11 +20,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		<!-- 一对多的关系 -->
 		<!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->
-		<collection property="orders" ofType="com.ittx.mybatis.demo1.model.Order">
-			<id column="orderId" property="id"/>
-			<result column="orderNumber" property="number"/>
-			<result column="orderPrice" property="price"/>
-		</collection>
+<!-- 		<collection property="orders" ofType="com.ittx.mybatis.demo1.model.Order"> -->
+<!-- 			<id column="orderId" property="id"/> -->
+<!-- 			<result column="orderNumber" property="number"/> -->
+<!-- 			<result column="orderPrice" property="price"/> -->
+<!-- 		</collection> -->
+		<collection property="orders" resultMap="com.ittx.mybatis.demo1.dao.OrderDao.orderBaseBean"/>
 	</resultMap>
 	
 	<!-- 根据id查询Person, 关联将Orders查询出来 -->

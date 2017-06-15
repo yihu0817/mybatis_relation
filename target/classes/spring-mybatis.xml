@@ -17,10 +17,10 @@
 	<!-- 数据库连接池 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<!-- 数据库连接属性必填 -->
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/scxh" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mybatis_relation_db?useSSL=true" />
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="user" value="root" />
-		<property name="password" value="b123" />
+		<property name="password" value="123456" />
 
 		<!-- 其它配置 -->
 		<!-- 初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default：3 -->

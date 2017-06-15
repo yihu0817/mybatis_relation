@@ -4,25 +4,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace 必须写成dao的包名+类名 -->
 <mapper namespace="com.ittx.mybatis.demo1.dao.OrderDao"> 
+	<resultMap type="com.ittx.mybatis.demo1.model.Order" id="orderBaseBean">
+		<id column="orderId" property="id"/>
+		<result column="orderNumber" property="number"/>
+		<result column="orderPrice" property="price"/>
+	</resultMap>
+
+<!-- 	<resultMap type="com.ittx.mybatis.demo1.model.Order" id="orderBean"> -->
+<!-- 		<id column="orderId" property="id"/> -->
+<!-- 		<result column="orderNumber" property="number"/> -->
+<!-- 		<result column="orderPrice" property="price"/> -->
+ 		<!-- 多对一的关系 --> 
+ 		<!--column:指外键值， property: 指的是属性的值, javaType：指的是属性的类型--> 
+<!-- 		<association column="pid" property="person" javaType="com.ittx.mybatis.demo1.model.Person"> -->
+<!-- 			<id column="personId" property="id"/> -->
+<!-- 			<result column="personName" property="name"/> -->
+<!-- 			<result column="personAddress" property="address"/> -->
+<!-- 			<result column="personTel" property="tel"/> -->
+<!-- 		</association> -->
+<!-- 	</resultMap> -->
+	
+<!-- 	<resultMap type="com.ittx.mybatis.demo1.model.Order" id="orderBean"> -->
+<!-- 		<id column="orderId" property="id"/> -->
+<!-- 		<result column="orderNumber" property="number"/> -->
+<!-- 		<result column="orderPrice" property="price"/> -->
+ 		<!-- 多对一的关系 -->
+ 		<!--column:指外键值， property: 指的是属性的值, resultMap：指的是属性的映射, --> 
+<!-- 		<association column="pid" property="person" resultMap="com.ittx.mybatis.demo1.dao.OrderDao.personBaseBean"/> -->
+<!-- 	</resultMap> -->
+	
 	<resultMap type="com.ittx.mybatis.demo1.model.Order" id="orderBean">
 		<id column="orderId" property="id"/>
 		<result column="orderNumber" property="number"/>
 		<result column="orderPrice" property="price"/>
-		
 		<!-- 多对一的关系 -->
-		<!-- property: 指的是属性的值, javaType：指的是属性的类型-->
-		<association property="person" javaType="com.ittx.mybatis.demo1.model.Person">
-			<id column="personId" property="id"/>
-			<result column="personName" property="name"/>
-			<result column="personAddress" property="address"/>
-			<result column="personTel" property="tel"/>
-		</association>
+		<!--column:指外键值， property: 指的是属性的值, select:使用另一个查询封装的结果 -->
+		<association column="orderId" property="person" select="selectPersonByOrderId"/>
 	</resultMap>
 	
-	<!-- 根据id查询Order, 关联将Person查询出来 -->
-	<select id="selectOrderById" parameterType="string" resultMap="orderBean">
-		select p.*, o.* from person p, orders o where p.personId  = o.pid and o.orderId = #{id}
+	<select id="selectOrderById" parameterType="string"  resultMap="orderBean">
+		select * from orders where orderId = #{id}
 	</select>
-
 	
+	<select id="selectPersonByOrderId" parameterType="string" resultMap="com.ittx.mybatis.demo1.dao.OrderDao.personBaseBean">
+		select * from person where personId in (select pid from orders where orderId = #{id})
+	</select>
+	
+		<!-- 根据id查询Order, 关联将Person查询出来 -->
+<!-- 	<select id="selectOrderById" parameterType="string" resultMap="orderBean"> -->
+<!-- 		select p.*, o.* from person p, orders o where p.personId  = o.pid and o.orderId = #{id} -->
+<!-- 	</select> -->
 </mapper>

@@ -6,7 +6,6 @@ package com.ittx.mybatis.demo1.model;
  * 
  */
 public class Order {
-
 	private String id;
 	private String number;
 	private int price;

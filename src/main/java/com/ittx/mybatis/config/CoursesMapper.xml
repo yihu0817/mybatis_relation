@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ittx.mybatis.demo1.dao.CoursesDao">
-
-
 	<resultMap type="com.ittx.mybatis.demo1.model.CoursesBean"
 		id="coursesMap">
 		<!-- 在默认情况下，mybatis会自动在TypeAliasRegistry初始化的时候挂在很多jdk常用类， 所以javaType="java.lang.Integer"可以写成javaType="Integer" -->
@@ -27,11 +25,12 @@
 		t_student where sid in (select fk_stu_id from t_stu_cou where
 		fk_cou_id=#{id})
 	</select>
-
+	<!--resultMap="coursesMap" 只根据课程id找课程不关联选修课程的学生  -->
 	<select id="findCouById" resultMap="coursesMap">
 		select * from t_courses where
 		cid=#{id}
 	</select>
+	<!--resultMap="couAndStu" 只根据课程id找课程同时关联查谒选修课程的学生  -->
 	<select id="findCouAndStu" resultMap="couAndStu">
 		select * from t_courses
 		where cid=#{id}
